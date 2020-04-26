@@ -1,5 +1,5 @@
 import {
-	AmbientLight,
+	AmbientLight, CameraHelper,
 	Color, Mesh, MeshBasicMaterial,
 	PerspectiveCamera,
 	PointLight,
@@ -15,6 +15,7 @@ import {Level} from "./level";
 import {Camera} from "./camera";
 import {Gravity} from "./gravity";
 import {FloatingCamera} from "./floating-camera";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 export class App {
 	private readonly scene = new Scene();
@@ -28,6 +29,7 @@ export class App {
 	private ambient: AmbientLight;
 	private light: PointLight;
 	private runner: number = 0;
+	private controls: OrbitControls;
 
 	objects: any[] = [];
 
@@ -36,15 +38,22 @@ export class App {
 		this.scene.add(this.ambient);
 
 		this.light = new PointLight(0xffffff, 0.5, 10000, 0);
-		this.light.position.set(80, 80, 50);
+		this.light.castShadow = true;
+
 		// const sphere = new SphereBufferGeometry( 1, 8, 8 );
 		// this.light.add( new Mesh( sphere, new MeshBasicMaterial( { color: 0xff0040 } ) ) );
 		this.scene.add(this.light);
 
 		this.renderer.setSize(innerWidth, innerHeight);
 		this.renderer.setClearColor(new Color('rgb(0,0,0)'));
+		this.renderer.shadowMap.enabled = true;
 
 		this.initObjects();
+
+		// @ts-ignore
+		this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+		// @ts-ignore
+		this.camera.controls = this.controls;
 
 		this.render();
 	}
@@ -55,11 +64,20 @@ export class App {
 			this.scene.add(this.camera);
 			this.objects.push(this.camera);  // for update()
 			this.objects.push(new Gravity(this.scene));
+
+			this.light.position.set(80, 80, 50);
+
+			// const cameraHelper = new CameraHelper(this.light.shadow.camera);
+			// this.scene.add(cameraHelper);
 		} else {
 			this.camera = new FloatingCamera();
 			this.scene.add(this.camera);
 			this.objects.push(this.camera);  // for update()
 			this.objects.push(new Level(this.scene));
+
+			this.light.position.set(8, 110, 25);
+			// const cameraHelper = new CameraHelper(this.light.shadow.camera);
+			// this.scene.add(cameraHelper);
 		}
 
 		this.objects.map(o => {
@@ -80,6 +98,8 @@ export class App {
 
 		this.adjustCanvasSize();
 		this.objects.map(o => o.update(this.runner));
+
+		this.controls.update();
 
 		this.runner += 1;
 	}

@@ -16,6 +16,8 @@ export class GravityParticle extends Brick {
 	constructor(scene: Object3D, size: number, color: Color | number | string) {
 		super(scene, size, color);
 		this.originalColor = color as number;
+		this.castShadow = true;
+		this.receiveShadow = true;
 		this.resetPos();
 	}
 

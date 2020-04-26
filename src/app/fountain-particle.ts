@@ -24,6 +24,7 @@ export class FountainParticle extends Brick {
     for (let i = 0; i < 1000; i++) {
       this.update(i);
     }
+	  this.castShadow = true;
   }
 
   resetPos() {
