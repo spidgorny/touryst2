@@ -27,7 +27,7 @@ export class App {
 	});
 
 	private ambient: AmbientLight;
-	private light: PointLight;
+	private light: PointLight | undefined;
 	private runner: number = 0;
 	private controls: OrbitControls;
 
@@ -36,13 +36,6 @@ export class App {
 	constructor() {
 		this.ambient = new AmbientLight(0xffffff, 0.5);
 		this.scene.add(this.ambient);
-
-		this.light = new PointLight(0xffffff, 0.5, 10000, 0);
-		this.light.castShadow = true;
-
-		// const sphere = new SphereBufferGeometry( 1, 8, 8 );
-		// this.light.add( new Mesh( sphere, new MeshBasicMaterial( { color: 0xff0040 } ) ) );
-		this.scene.add(this.light);
 
 		this.renderer.setSize(innerWidth, innerHeight);
 		this.renderer.setClearColor(new Color('rgb(0,0,0)'));
@@ -58,14 +51,26 @@ export class App {
 		this.render();
 	}
 
+	initLight() {
+		this.light = new PointLight(0xffffff, 0.5, 10000, 0);
+		this.light.castShadow = true;
+
+		// const sphere = new SphereBufferGeometry( 1, 8, 8 );
+		// this.light.add( new Mesh( sphere, new MeshBasicMaterial( { color: 0xff0040 } ) ) );
+		this.scene.add(this.light);
+	}
+
 	private initObjects() {
 		if (new URLSearchParams(document.location.search).has('gravity')) {
 			this.camera = new Camera();
+			this.camera.position.set(this.camera.x / 2, this.camera.y / 4, this.camera.z / 2);
 			this.scene.add(this.camera);
-			this.objects.push(this.camera);  // for update()
+
 			this.objects.push(new Gravity(this.scene));
 
-			this.light.position.set(80, 80, 50);
+			this.initLight();
+			// @ts-ignore
+			this.light.position.set(0, 8, 0);
 
 			// const cameraHelper = new CameraHelper(this.light.shadow.camera);
 			// this.scene.add(cameraHelper);
@@ -75,6 +80,8 @@ export class App {
 			this.objects.push(this.camera);  // for update()
 			this.objects.push(new Level(this.scene));
 
+			this.initLight();
+			// @ts-ignore
 			this.light.position.set(8, 110, 25);
 			// const cameraHelper = new CameraHelper(this.light.shadow.camera);
 			// this.scene.add(cameraHelper);

@@ -19,7 +19,7 @@ export class Gravity extends Component {
         0.5 + Math.random() * 0.5,
         0.5 + Math.random() * 0.5,
       );
-      this.objects.push(new GravityParticle(this.scene, 0.5, color));
+      this.objects.push(new GravityParticle(this.scene, 0.2, color));
     }
 
     this.addToScene();

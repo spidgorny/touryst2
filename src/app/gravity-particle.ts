@@ -1,9 +1,11 @@
 import {Brick} from "./brick";
 import {Color, Scene, Vector3} from "three";
 import {Object3D} from "three/src/core/Object3D";
+import {Sphere} from "./sphere";
 
-export class GravityParticle extends Brick {
+export class GravityParticle extends Sphere {
 
+	// @ts-ignore
 	originalColor: number;
 
 	x = 0;
@@ -14,7 +16,9 @@ export class GravityParticle extends Brick {
 	gravity: Vector3 = new Vector3(0, 0, 0);
 
 	constructor(scene: Object3D, size: number, color: Color | number | string) {
-		super(scene, size, color);
+		super(scene, new Vector3(0, 0, 0), size);
+		// @ts-ignore
+		this.material.color.set(color);
 		this.originalColor = color as number;
 		this.castShadow = true;
 		this.receiveShadow = true;
