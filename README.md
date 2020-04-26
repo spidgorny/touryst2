@@ -3,3 +3,5 @@
 ![screenshot](docs/screenshot1.png) 
 
 [Demo](https://spidgorny.github.io/touryst2/index.html)
+
+[Orbit simulation](https://spidgorny.github.io/touryst2/index.html?gravity)
