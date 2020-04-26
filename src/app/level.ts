@@ -1,15 +1,16 @@
 import {BoxGeometry, Color, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, Scene} from 'three';
 import {GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {Fountain} from "./fountain";
+import {Object3D} from "three/src/core/Object3D";
 
 
 export class Level extends Mesh {
 
   objects: any[] = [];
 
-  constructor(scene: Scene) {
+  constructor(scene: Object3D) {
     super();
-    this.objects.push(new Fountain());
+    this.objects.push(new Fountain(scene));
     this.objects.map(o => this.add(o));
 
     const loader = new GLTFLoader();

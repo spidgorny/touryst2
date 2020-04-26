@@ -1,5 +1,6 @@
 import {Brick} from "./brick";
-import {Color, Vector3} from "three";
+import {Color, Scene, Vector3} from "three";
+import {Object3D} from "three/src/core/Object3D";
 
 export class FountainParticle extends Brick {
 
@@ -12,8 +13,8 @@ export class FountainParticle extends Brick {
   force: Vector3 = new Vector3();
   gravity: Vector3 = new Vector3(0, -0.01, 0);
 
-  constructor(size: number, color: Color | number | string) {
-    super(size, color);
+  constructor(scene: Object3D, size: number, color: Color | number | string) {
+    super(scene, size, color);
     this.originalColor = color as number;
     this.resetPos();
 
